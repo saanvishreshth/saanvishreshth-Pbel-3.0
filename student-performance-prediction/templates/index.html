@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Performance Prediction System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">StudentPredict</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/predict">Predict</a>
+            <a href="/history">History</a>
+            <button id="darkModeBtn">🌙 Dark Mode</button>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1>Predict Your <span>Academic Performance</span></h1>
+                <p>
+                    A simple machine learning powered tool that estimates a student's final score
+                    based on study habits, attendance, and a few other factors. Built as a college
+                    mini-project using Python, Flask and Scikit-learn.
+                </p>
+                <a href="/predict" class="btn">Try a Prediction</a>
+            </section>
+
+            <!-- Project Introduction -->
+            <section class="intro">
+                <h2 style="margin-bottom: 14px;">About This Project</h2>
+                <p>
+                    This project uses a Linear Regression model trained on student records to
+                    predict how well a student might perform in their final exams. It looks at
+                    things like study hours, attendance, previous marks, and more to give a
+                    quick estimate along with some suggestions for improvement.
+                </p>
+            </section>
+
+            <!-- Features -->
+            <section class="features">
+                <div class="card">
+                    <h3>📊 Score Prediction</h3>
+                    <p>Get an instant predicted final score using a trained ML model.</p>
+                </div>
+                <div class="card">
+                    <h3>🎯 Performance Category</h3>
+                    <p>See if a student falls under Excellent, Good, Average or Needs Improvement.</p>
+                </div>
+                <div class="card">
+                    <h3>💡 Personalized Tips</h3>
+                    <p>Get simple, actionable suggestions based on the entered details.</p>
+                </div>
+                <div class="card">
+                    <h3>📁 Prediction History</h3>
+                    <p>All predictions are saved so you can look back and compare records.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 Student Performance Prediction System | Made for academic purposes
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

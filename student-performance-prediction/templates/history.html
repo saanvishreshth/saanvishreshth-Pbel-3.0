@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction History</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">StudentPredict</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/predict">Predict</a>
+            <a href="/history">History</a>
+            <button id="darkModeBtn">🌙 Dark Mode</button>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <h2 style="margin-bottom: 20px;">Prediction History</h2>
+
+            <!-- Stats cards -->
+            <div class="stats-row">
+                <div class="card stat-card">
+                    <h2>{{ total_predictions }}</h2>
+                    <p>Total Predictions</p>
+                </div>
+                <div class="card stat-card">
+                    <h2>{{ avg_score }}</h2>
+                    <p>Average Score</p>
+                </div>
+                <div class="card stat-card">
+                    <h2>{{ highest_score }}</h2>
+                    <p>Highest Score</p>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            {% if records|length > 0 %}
+            <div class="charts-row">
+                <div class="card">
+                    <h3 style="margin-bottom: 12px;">Predicted Scores</h3>
+                    <canvas id="scoreChart"></canvas>
+                </div>
+                <div class="card">
+                    <h3 style="margin-bottom: 12px;">Performance Distribution</h3>
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Search / Sort / Export controls -->
+            <div class="history-controls">
+                <form action="/history" method="GET" style="display:flex; gap:10px;">
+                    <input type="text" name="search" placeholder="Search student name..." value="{{ search_query }}">
+                    <select name="sort" onchange="this.form.submit()">
+                        <option value="created_at">Sort by Date</option>
+                        <option value="student_name">Sort by Name</option>
+                        <option value="predicted_score">Sort by Score</option>
+                        <option value="performance">Sort by Performance</option>
+                    </select>
+                    <button type="submit" class="btn btn-secondary">Search</button>
+                </form>
+                <a href="/export-csv" class="btn">Export CSV</a>
+            </div>
+
+            <!-- Records table -->
+            <div class="card" style="padding: 0; overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Predicted Score</th>
+                            <th>Performance</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr>
+                            <td>{{ record["student_name"] }}</td>
+                            <td>{{ record["predicted_score"] }}</td>
+                            <td>{{ record["performance"] }}</td>
+                            <td>{{ record["created_at"] }}</td>
+                            <td><a class="delete-link" href="/delete/{{ record['id'] }}" onclick="return confirm('Delete this record?')">Delete</a></td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" style="text-align:center; color: var(--text-gray);">No records found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 Student Performance Prediction System | Made for academic purposes
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    {% if records|length > 0 %}
+    <script>
+        // Data passed from Flask to build the charts
+        const studentNames = [{% for record in records %}"{{ record['student_name'] }}",{% endfor %}];
+        const scores = [{% for record in records %}{{ record['predicted_score'] }},{% endfor %}];
+        const performances = [{% for record in records %}"{{ record['performance'] }}",{% endfor %}];
+
+        // Chart 1: Predicted Scores (bar chart)
+        new Chart(document.getElementById("scoreChart"), {
+            type: "bar",
+            data: {
+                labels: studentNames,
+                datasets: [{
+                    label: "Predicted Score",
+                    data: scores,
+                    backgroundColor: "#6c8ef5"
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, max: 100 } }
+            }
+        });
+
+        // Chart 2: Performance Distribution (pie chart)
+        const categories = ["Excellent", "Good", "Average", "Needs Improvement"];
+        const counts = categories.map(function (cat) {
+            return performances.filter(function (p) { return p === cat; }).length;
+        });
+
+        new Chart(document.getElementById("performanceChart"), {
+            type: "pie",
+            data: {
+                labels: categories,
+                datasets: [{
+                    data: counts,
+                    backgroundColor: ["#4caf7d", "#6c8ef5", "#f0b93b", "#e0554a"]
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
+    {% endif %}
+</body>
+</html>

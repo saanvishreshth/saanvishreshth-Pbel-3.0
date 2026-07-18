@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Make a Prediction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">StudentPredict</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/predict">Predict</a>
+            <a href="/history">History</a>
+            <button id="darkModeBtn">🌙 Dark Mode</button>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div class="card form-card">
+                <h2 style="text-align:center; margin-bottom: 6px;">Predict Student Score</h2>
+                <p style="text-align:center; color: var(--text-gray); margin-bottom: 24px;">
+                    Fill in the details below to get a predicted final score.
+                </p>
+
+                <form id="predictForm" action="/predict" method="POST" novalidate>
+
+                    <div class="form-group">
+                        <label for="student_name">Student Name</label>
+                        <input type="text" id="student_name" name="student_name" placeholder="e.g. Rahul Sharma">
+                        <div class="error-text" id="student_nameError">Please enter the student's name.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="study_hours">Study Hours (per day)</label>
+                        <input type="number" step="0.1" id="study_hours" name="study_hours" placeholder="e.g. 4.5">
+                        <div class="error-text" id="study_hoursError">Enter a value between 0 and 24.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="attendance">Attendance Percentage</label>
+                        <input type="number" step="0.1" id="attendance" name="attendance" placeholder="e.g. 82">
+                        <div class="error-text" id="attendanceError">Enter a value between 0 and 100.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="previous_marks">Previous Exam Marks</label>
+                        <input type="number" step="0.1" id="previous_marks" name="previous_marks" placeholder="e.g. 70">
+                        <div class="error-text" id="previous_marksError">Enter a value between 0 and 100.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="assignments">Assignments Completed (out of 10)</label>
+                        <input type="number" id="assignments" name="assignments" placeholder="e.g. 8">
+                        <div class="error-text" id="assignmentsError">Enter a value between 0 and 10.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="participation">Class Participation</label>
+                        <select id="participation" name="participation">
+                            <option value="1">Very Low</option>
+                            <option value="2">Low</option>
+                            <option value="3" selected>Average</option>
+                            <option value="4">Good</option>
+                            <option value="5">Excellent</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sleep_hours">Sleep Hours (per day)</label>
+                        <input type="number" step="0.1" id="sleep_hours" name="sleep_hours" placeholder="e.g. 7">
+                        <div class="error-text" id="sleep_hoursError">Enter a value between 0 and 24.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="internet_study">Internet Usage for Study (hours/day)</label>
+                        <input type="number" step="0.1" id="internet_study" name="internet_study" placeholder="e.g. 2">
+                        <div class="error-text" id="internet_studyError">Enter a value between 0 and 24.</div>
+                    </div>
+
+                    <div class="spinner" id="loadingSpinner"></div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn" id="submitBtn" style="flex:1;">Predict Score</button>
+                        <button type="button" class="btn btn-secondary" id="resetBtn" style="flex:1;">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 Student Performance Prediction System | Made for academic purposes
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

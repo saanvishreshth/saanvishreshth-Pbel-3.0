@@ -2,11 +2,14 @@
 # Helper functions related to the ML model.
 # Keeping this separate from app.py so the Flask file doesn't get messy.
 
+import os
 import pickle
 import pandas as pd
 
-# Load the trained model once when this file is imported
-with open("model.pkl", "rb") as f:
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "model.pkl")
+
+with open(MODEL_PATH, "rb") as f:
     trained_model = pickle.load(f)
 
 

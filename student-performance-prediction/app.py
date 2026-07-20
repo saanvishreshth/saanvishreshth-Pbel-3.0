@@ -12,7 +12,8 @@ from model import predict_score, get_category, get_suggestions
 
 app = Flask(__name__)
 
-DB_NAME = "database.db"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_NAME = os.path.join(BASE_DIR, "database.db")
 
 
 def get_db_connection():
@@ -186,5 +187,11 @@ def export_csv():
     return response
 
 
+import os
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000)),
+        debug=False
+    )

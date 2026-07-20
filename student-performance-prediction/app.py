@@ -7,6 +7,7 @@ import sqlite3
 from datetime import datetime
 import csv
 import io
+import os
 
 from model import predict_score, get_category, get_suggestions
 
@@ -186,8 +187,6 @@ def export_csv():
     response.headers["Content-Disposition"] = "attachment; filename=prediction_history.csv"
     return response
 
-
-import os
 
 if __name__ == "__main__":
     app.run(
